@@ -14,7 +14,9 @@ import RPi.GPIO as GPIO
 import jwt
 import paho.mqtt.client as mqtt
 
-
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+GPIO.setup(14,GPIO.OUT)
 
 logging.getLogger('googleapiclient.discovery_cache').setLevel(logging.CRITICAL)
 
@@ -97,7 +99,7 @@ def on_message(unused_client, unused_userdata, message):
     print('Received message \'{}\' on topic \'{}\' with Qos {}'.format(
             payload, message.topic, str(message.qos)))
     payload=payload.upper()
-    
+    print(payload)
     if payload=='ON':
         GPIO.output(14, GPIO.HIGH)
         print("-----------led is on---------")
