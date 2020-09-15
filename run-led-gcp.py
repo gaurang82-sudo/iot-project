@@ -99,6 +99,7 @@ def on_message(unused_client, unused_userdata, message):
     payload = str(message.payload.decode('utf-8'))
     print('Received message \'{}\' on topic \'{}\' with Qos {}'.format(
             payload, message.topic, str(message.qos)))
+    payload=payload.upper()
     
     if payload=='ON':
         print("-----------led is on---------")
@@ -187,11 +188,6 @@ def parse_command_line_args():
             type=int,
             help='Expiration time, in minutes, for JWT tokens.')
     parser.add_argument(
-            '--listen_dur',
-            default=60,
-            type=int,
-            help='Duration (seconds) to listen for configuration messages')
-    parser.add_argument(
             '--message_type',
             choices=('event', 'state'),
             default='event',
@@ -216,7 +212,7 @@ def parse_command_line_args():
             default='prime-chess-287006',
             help='GCP cloud project name')
     parser.add_argument(
-            '--registry_id', defalut='rap-registry95', help='Cloud IoT Core registry id')
+            '--registry_id', default='rap-registry95', help='Cloud IoT Core registry id')
     parser.add_argument(
             '--service_account_json',
             default=os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"),
