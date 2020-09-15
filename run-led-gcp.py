@@ -99,9 +99,7 @@ def on_message(unused_client, unused_userdata, message):
     payload = str(message.payload.decode('utf-8'))
     print('Received message \'{}\' on topic \'{}\' with Qos {}'.format(
             payload, message.topic, str(message.qos)))
-    print(payload)
-   
-    print(payload.find('ON')!=-1)
+    
     if payload=='ON':
         print("-----------led is on---------")
     elif payload=='OFF':
@@ -173,22 +171,16 @@ def parse_command_line_args():
     parser.add_argument(
             '--algorithm',
             choices=('RS256', 'ES256'),
-            required=True,
+            default='RS256',
             help='Which encryption algorithm to use to generate the JWT.')
     parser.add_argument(
             '--ca_certs',
-            default='roots.pem',
+            default='/home/pi/roots.pem',
             help='CA root from https://pki.google.com/roots.pem')
     parser.add_argument(
             '--cloud_region', default='us-central1', help='GCP cloud region')
     parser.add_argument(
-            '--data',
-            default='Hello there',
-            help='The telemetry data sent on behalf of a device')
-    parser.add_argument(
-            '--device_id', required=True, help='Cloud IoT Core device id')
-    parser.add_argument(
-            '--gateway_id', required=False, help='Gateway identifier.')
+            '--device_id', default='rap-device', help='Cloud IoT Core device id')
     parser.add_argument(
             '--jwt_expires_minutes',
             default=20,
@@ -216,39 +208,21 @@ def parse_command_line_args():
             type=int,
             help='MQTT bridge port.')
     parser.add_argument(
-            '--num_messages',
-            type=int,
-            default=100,
-            help='Number of messages to publish.')
-    parser.add_argument(
             '--private_key_file',
-            required=True,
+            default='/home/pi/rsa_private.pem',
             help='Path to private key file.')
     parser.add_argument(
             '--project_id',
-            default=os.environ.get('GOOGLE_CLOUD_PROJECT'),
+            default='prime-chess-287006',
             help='GCP cloud project name')
     parser.add_argument(
-            '--registry_id', required=True, help='Cloud IoT Core registry id')
+            '--registry_id', defalut='rap-registry95', help='Cloud IoT Core registry id')
     parser.add_argument(
             '--service_account_json',
             default=os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"),
             help='Path to service account json file.')
 
-    # Command subparser
-    command = parser.add_subparsers(dest='command')
-
-    command.add_parser(
-        'device_demo',
-        help='mqtt_device_demo.__doc__')
-
-    command.add_parser(
-        'gateway_send',
-        help='send_data_from_bound_device.__doc__')
-
-    command.add_parser(
-        'gateway_listen',
-        help='66666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666listen_for_messages.__doc__')
+ 
 
     return parser.parse_args()
 
